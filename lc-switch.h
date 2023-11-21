@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2023, Sebastian Esch
+ *
  * Copyright (c) 2004-2005, Swedish Institute of Computer Science.
  * All rights reserved.
  *
@@ -29,6 +31,7 @@
  * This file is part of the Contiki operating system.
  *
  * Author: Adam Dunkels <adam@sics.se>
+ * Modifications: Sebastian Esch <https://github.com/sbe15/protothreads>
  *
  * $Id: lc-switch.h,v 1.4 2006/06/03 11:29:43 adam Exp $
  */
@@ -67,7 +70,10 @@ typedef unsigned short lc_t;
 
 #define LC_RESUME(s) switch(s) { case 0:
 
-#define LC_SET(s) s = __LINE__; case __LINE__:
+// Old: (will crash on multiple LC_SET occurances on the same line)
+// #define LC_SET(s) s = __LINE__; case __LINE__:
+// New: (produces monotonic labels, note that both expressions evaluate to the same value)
+#define LC_SET(s) s = __COUNTER__+1; case __COUNTER__:
 
 #define LC_END(s) }
 
