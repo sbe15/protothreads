@@ -1,4 +1,6 @@
 /*
+ * Copyright (c) 2023, Sebastian Esch
+ *
  * Copyright (c) 2004-2005, Swedish Institute of Computer Science.
  * All rights reserved.
  *
@@ -29,6 +31,7 @@
  * This file is part of the Contiki operating system.
  *
  * Author: Adam Dunkels <adam@sics.se>
+ * Modifications by Sebastian Esch <https://github.com/sbe15/protothreads>
  *
  * $Id: pt.h,v 1.7 2006/10/02 07:52:56 adam Exp $
  */
@@ -112,7 +115,10 @@ struct pt {
  *
  * \hideinitializer
  */
-#define PT_BEGIN(pt) { char PT_YIELD_FLAG = 1; LC_RESUME((pt)->lc)
+// Old: (will produce a compiler warning if no PT_YIELD statement is used)
+// #define PT_BEGIN(pt) { char PT_YIELD_FLAG = 1; LC_RESUME((pt)->lc)
+// New: (mark PT_YIELD_FLAG as potentially unused)
+#define PT_BEGIN(pt) { char PT_YIELD_FLAG = 1; (void)PT_YIELD_FLAG; LC_RESUME((pt)->lc)
 
 /**
  * Declare the end of a protothread.
